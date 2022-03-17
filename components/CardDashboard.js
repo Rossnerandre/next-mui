@@ -5,6 +5,7 @@ import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import { Link } from '@mui/material';
 
 export default function CardDashboard(props) {
 
@@ -19,7 +20,9 @@ export default function CardDashboard(props) {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button color={props.btnColor} size="small" variant="contained">Ir para {props.nome}</Button>
+        <Link href={props.link}>
+          <Button color={props.btnColor} size="small" variant="contained">Ir para {props.nome}</Button>
+        </Link>
       </CardActions>
     </React.Fragment >
   );
