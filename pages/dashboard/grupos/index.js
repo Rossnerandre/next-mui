@@ -28,6 +28,10 @@ import axios from 'axios';
 import { mutate } from 'swr';
 import ConfirmDialog from '../../../components/ConfirmDialog';
 import Notification from '../../../components/Notification';
+import Controls from '../../../components/controls/Controls';
+import AddIcon from '@mui/icons-material/Add';
+import Popup from '../../../components/Popup';
+import FormGrupo from '../../../components/FormGrupo';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -133,6 +137,7 @@ const searchFields = (dados, entrada) => {
 
 export default function Grupos(props) {
   const [drawerState, setDrawerState] = React.useState({ right: false });
+  const [openPopup, setOpenPopup] = React.useState(false)
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [sortOrder, setSortOrder] = React.useState(true);
@@ -195,7 +200,7 @@ export default function Grupos(props) {
       setNotify({
         isOpen: true,
         message: 'Update Successfully',
-        type: 'success'
+        severity: 'success'
       })
     } catch (e) {
       if (e.response.data.errors.nome) {
@@ -225,11 +230,23 @@ export default function Grupos(props) {
       setNotify({
         isOpen: true,
         message: 'Deleted Successfully',
-        type: 'error'
+        severity: 'error'
       })
     } catch (error) {
       console.log(error.response)
     }
+  }
+
+  const handleAddGrupo = (values, resetForm) => {
+    resetForm()
+    console.log(values);
+    setOpenPopup(false)
+    mutate('http://cartoes-back.test/api/grupos');
+    setNotify({
+      isOpen: true,
+      message: 'Add Successfully',
+      type: 'success'
+    })
   }
 
   const sortedDados = sortId(grupos, sortOrder);
@@ -308,9 +325,17 @@ export default function Grupos(props) {
     </TableBody>
   )
 
+  const openInPopup = item => {
+    setRecordForEdit(item)
+    setOpenPopup(true)
+  }
+
   return (
     <div>
-      <Typography variant='h3' mb={3}>Grupos</Typography>
+      <Box >
+        <Typography variant='h3' mb={3}>Grupos</Typography>
+        <Typography variant='h5' mb={3}>Add Grupo <Button variant='contained' color={'success'} onClick={() => { setOpenPopup(true) }}><AddIcon /></Button></Typography>
+      </Box>
       <TableContainer component={Paper} sx={{ display: 'flex', flexDirection: 'column' }}>
         <Box m={1} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <Typography variant='h4' >Listagem de Grupos</Typography>
@@ -413,6 +438,13 @@ export default function Grupos(props) {
             </Box>
           </Box >
         </Drawer>
+        <Popup
+          title="Formulário de grupo"
+          openPopup={openPopup}
+          setOpenPopup={setOpenPopup}
+        >
+          <FormGrupo handleAddGrupo={handleAddGrupo} />
+        </Popup>
         <ConfirmDialog
           confirmDialog={confirmDialog}
           setConfirmDialog={setConfirmDialog}
