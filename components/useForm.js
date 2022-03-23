@@ -3,53 +3,48 @@ import React, { useState } from 'react'
 
 export function useForm(initialFValues, validateOnChange = false, validate) {
 
+  const [values, setValues] = useState(initialFValues);
+  const [errors, setErrors] = useState({});
 
-    const [values, setValues] = useState(initialFValues);
-    const [errors, setErrors] = useState({});
+  const handleInputChange = e => {
+    const { name, value } = e.target
+    if (name === 'status') {
+      setValues({
+        ...values,
+        [name]: e.target.checked
+      })
+      return;
+    };
 
-    const handleInputChange = e => {
-        const { name, value } = e.target
-        setValues({
-            ...values,
-            [name]: value
-        })
-        if (validateOnChange)
-            validate({ [name]: value })
-    }
+    setValues({
+      ...values,
+      [name]: value
+    })
+    if (validateOnChange)
+      validate({ [name]: value })
+  }
 
-    const resetForm = () => {
-        setValues(initialFValues);
-        setErrors({})
-    }
+  const resetForm = () => {
+    setValues(initialFValues);
+    setErrors({})
+  }
 
-
-    return {
-        values,
-        setValues,
-        errors,
-        setErrors,
-        handleInputChange,
-        resetForm
-
-    }
+  return {
+    values,
+    setValues,
+    errors,
+    setErrors,
+    handleInputChange,
+    resetForm
+  }
 }
-
-
-// const useStyles = makeStyles(theme => ({
-//     root: {
-//         '& .MuiFormControl-root': {
-//             width: '80%',
-//             margin: theme.spacing(1)
-//         }
-//     }
-// }))
 
 export function Form(props) {
 
-    const { children, ...other } = props;
-    return (
-        <form autoComplete="off" {...other}>
-            {props.children}
-        </form>
-    )
+  const { children, ...other } = props;
+  return (
+    <form autoComplete="off" {...other}>
+      {props.children}
+    </form>
+  )
 }

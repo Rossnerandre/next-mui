@@ -1,5 +1,5 @@
 import React from 'react'
-import { Button, makeStyles } from '@mui/material';
+import { Button } from '@mui/material';
 
 
 // const useStyles = makeStyles(theme => ({
@@ -24,10 +24,11 @@ import { Button, makeStyles } from '@mui/material';
 export default function ActionButton(props) {
 
     const { color, children, onClick } = props;
-    const classes = useStyles();
+
 
     return (
         <Button
+            color={color || "primary"}
             onClick={onClick}>
             {children}
         </Button>

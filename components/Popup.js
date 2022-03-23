@@ -23,11 +23,11 @@ export default function Popup(props) {
         <Dialog open={openPopup} maxWidth="md" >
             <DialogTitle>
                 <div style={{ display: 'flex' }}>
-                    <Typography variant="h6" component="div" style={{ flexGrow: 1 }}>
+                    <Typography variant="h6" component="div" style={{ flexGrow: 1 }} mr={2}>
                         {title}
                     </Typography>
                     <Controls.ActionButton
-                        color="secondary"
+                        color="error"
                         onClick={() => { setOpenPopup(false) }}>
                         <CloseIcon />
                     </Controls.ActionButton>
